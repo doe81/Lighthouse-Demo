@@ -1,0 +1,84 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "mspOfferName": {
+            "type": "string",
+            "value": "Crayon AB (Cloud Services) - Gold Support Contract",
+            "metadata": {
+                "description": "Specify the name of the offer from the Managed Service Provider"
+            }
+        },
+        "mspOfferDescription": {
+            "type": "string",
+            "value": "Gold Support Contract",
+            "metadata": {
+                "description": "Name of the Managed Service Provider offering"
+            }
+        },
+        "managedByTenantId": {
+            "type": "string",
+            "value": "e7a9323f-7ea7-4d18-877c-0ed130604fd8",
+            "metadata": {
+                "description": "Specify the tenant id of the Managed Service Provider"
+            }
+        },
+        "authorizations": {
+            "type": "array",
+            "value": [
+                
+                {
+                    "principalId": "d3cdbdd2-1e21-4149-a225-1761569b95fe",
+                    "principalIdDisplayName": "Premium Support Plan",
+                    "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+                },
+                {
+                    "principalId": "1ac6e12e-eef5-4c54-9095-6c8bbce5b3f2",
+                    "principalIdDisplayName": "Cloud Economics",
+                    "roleDefinitionId": "fa23ad8b-c56e-40d8-ac0c-ce449e1d2c64"
+                }
+            ],
+            "metadata": {
+                "description": "Specify an array of objects, containing tuples of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers."
+            }
+        }              
+    },
+    "variables": {
+        "mspRegistrationName": "[guid(parameters('mspOfferName'))]",
+        "mspAssignmentName": "[guid(parameters('mspOfferName'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ManagedServices/registrationDefinitions",
+            "apiVersion": "2019-06-01",
+            "name": "[variables('mspRegistrationName')]",
+            "properties": {
+                "registrationDefinitionName": "[parameters('mspOfferName')]",
+                "description": "[parameters('mspOfferDescription')]",
+                "managedByTenantId": "[parameters('managedByTenantId')]",
+                "authorizations": "[parameters('authorizations')]"
+            }
+        },
+        {
+            "type": "Microsoft.ManagedServices/registrationAssignments",
+            "apiVersion": "2019-06-01",
+            "name": "[variables('mspAssignmentName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('mspRegistrationName'))]"
+            ],
+            "properties": {
+                "registrationDefinitionId": "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('mspRegistrationName'))]"
+            }
+        }
+    ],
+    "outputs": {
+        "mspOfferName": {
+            "type": "string",
+            "value": "[concat('Managed by', ' ', parameters('mspOfferName'))]"
+        },
+        "authorizations": {
+            "type": "array",
+            "value": "[parameters('authorizations')]"
+        }
+    }
+}
