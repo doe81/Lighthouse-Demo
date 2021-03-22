@@ -4,28 +4,28 @@
     "parameters": {
         "mspOfferName": {
             "type": "string",
-            "value": "Crayon AB (Cloud Services) - Gold Support Contract",
+            "defaultValue": "Crayon AB (Cloud Services) - Gold Support Contract",
             "metadata": {
                 "description": "Specify the name of the offer from the Managed Service Provider"
             }
         },
         "mspOfferDescription": {
             "type": "string",
-            "value": "Gold Support Contract",
+            "defaultValue": "Gold Support Contract",
             "metadata": {
                 "description": "Name of the Managed Service Provider offering"
             }
         },
         "managedByTenantId": {
             "type": "string",
-            "value": "e7a9323f-7ea7-4d18-877c-0ed130604fd8",
+            "defaultValue": "e7a9323f-7ea7-4d18-877c-0ed130604fd8",
             "metadata": {
                 "description": "Specify the tenant id of the Managed Service Provider"
             }
         },
         "authorizations": {
             "type": "array",
-            "value": [
+            "defaultValue": [
                 
                 {
                     "principalId": "d3cdbdd2-1e21-4149-a225-1761569b95fe",
